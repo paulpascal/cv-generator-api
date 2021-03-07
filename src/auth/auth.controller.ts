@@ -2,6 +2,7 @@ import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { AuthCredentialsDto } from '../../dist/auth/dtos/authenticate.dto';
 import { AuthRegisterDto } from '../../dist/auth/dtos/register.dto';
 import { AuthService } from './auth.service';
+import { AuthConfirmSignupDto } from './dtos/confirm-signup';
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +28,15 @@ export class AuthController {
   async authenticate(@Body() authenticateRequest: AuthCredentialsDto) {
     try {
       return await this.authService.authenticateUser(authenticateRequest);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  @Post('verify-email')
+  async verifyEmail(@Body() authConfirmSignupDto: AuthConfirmSignupDto) {
+    try {
+      return await this.authService.verifyEmail(authConfirmSignupDto);
     } catch (e) {
       throw new BadRequestException(e.message);
     }

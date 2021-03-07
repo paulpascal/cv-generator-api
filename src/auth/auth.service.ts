@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AuthCredentialsDto } from '../../dist/auth/dtos/authenticate.dto';
 import { AuthRegisterDto } from '../../dist/auth/dtos/register.dto';
 import { AuthConfig } from './auth.config';
+import { AuthConfirmSignupDto } from './dtos/confirm-signup';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -64,6 +65,23 @@ export class AuthService {
         onFailure: (err) => {
           reject(err);
         },
+      });
+    });
+  }
+
+  async verifyEmail(authConfirmSignupDto: AuthConfirmSignupDto) {
+    const { email, code } = authConfirmSignupDto;
+    const userData = {
+      Username: email,
+      Pool: this.userPool,
+    };
+    const newUser = new CognitoUser(userData);
+    return new Promise((resolve, reject) => {
+      return newUser.confirmRegistration(code, true, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
       });
     });
   }
