@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthConfig } from './auth.config';
-import { AuthConfirmSignupDto } from './dtos/confirm-signup';
+import { AuthConfirmationInput, AuthConfirmationOutput } from './dtos/confirm-signup.dto';
 import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserAttribute,
   CognitoUserPool,
 } from 'amazon-cognito-identity-js';
-import { AuthRegisterDto } from './dtos/register';
-import { AuthCredentialsDto } from './dtos/authenticate';
+import { AuthRegisterInput, AuthRegisterOutput } from './dtos/register.dto';
+import { AuthenticateInput, AuthenticateOutput } from './dtos/authenticate.dto';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +27,7 @@ export class AuthService {
     return this.authConfig.secret;
   }
 
-  async register(authRegisterRequest: AuthRegisterDto) {
+  async register(authRegisterRequest: AuthRegisterInput): Promise<AuthRegisterOutput> {
     const { name, email, password } = authRegisterRequest;
     return new Promise((resolve, reject) => {
       return this.userPool.signUp(
@@ -37,16 +37,16 @@ export class AuthService {
         null,
         (err, result) => {
           if (!result) {
-            reject(err);
+            reject({ok: false, error: err.message});
           } else {
-            resolve(result.user);
+            resolve({ok: true});
           }
         },
       );
     });
   }
 
-  async authenticateUser(user: AuthCredentialsDto) {
+  async authenticateUser(user: AuthenticateInput): Promise<AuthenticateOutput> {
     const { name, password } = user;
     const authenticationDetails = new AuthenticationDetails({
       Username: name,
@@ -60,16 +60,16 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       return newUser.authenticateUser(authenticationDetails, {
         onSuccess: (result) => {
-          resolve(result);
+          resolve({ok: true, token: result.getAccessToken() });
         },
         onFailure: (err) => {
-          reject(err);
+          reject({ok: false, error: err.message});
         },
       });
     });
   }
 
-  async verifyEmail(authConfirmSignupDto: AuthConfirmSignupDto) {
+  async verifyEmail(authConfirmSignupDto: AuthConfirmationInput):Promise<AuthConfirmationOutput> {
     const { email, code } = authConfirmSignupDto;
     const userData = {
       Username: email,
@@ -79,9 +79,9 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       return newUser.confirmRegistration(code, true, (err, res) => {
         if (err) {
-          reject(err);
+          reject({ok: false, error: err.message});
         }
-        resolve(res);
+        resolve({ok:true});
       });
     });
   }
