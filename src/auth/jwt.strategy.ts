@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { passportJwtSecret } from 'jwks-rsa';
 import { AuthConfig } from './auth.config';
+import { CognitoIdToken } from 'amazon-cognito-identity-js';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -28,6 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   public async validate(payload: any) {
     console.log("pl",payload);
-    return !!payload.sub;
+    return payload.sub;
   }
 }

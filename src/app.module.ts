@@ -9,6 +9,8 @@ import { CommonModule } from './common/common.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { ProfileModule } from './profile/profile.module';
+import { Profile } from './profile/entities/profile.entity';
 
 
 global['fetch'] = require('node-fetch');
@@ -38,11 +40,12 @@ global['fetch'] = require('node-fetch');
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],
+      entities: [User, Profile],
       logging: process.env.NODE_ENV !=='prod' && process.env.NODE_ENV!=='test',
       synchronize: process.env.NODE_ENV !== "prod",
     }),
     UserModule,
+    ProfileModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
