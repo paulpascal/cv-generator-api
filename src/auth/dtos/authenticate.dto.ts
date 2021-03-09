@@ -1,4 +1,4 @@
-import { CognitoAccessToken } from "amazon-cognito-identity-js";
+import { CognitoIdToken } from "amazon-cognito-identity-js";
 import { QueryOutput } from "src/common/dtos/output.dto";
 
 export class AuthenticateInput{
@@ -7,5 +7,6 @@ export class AuthenticateInput{
 }
 
 export class AuthenticateOutput extends QueryOutput{
-  token?: CognitoAccessToken
+  token?: string;
+  userId?: CognitoIdToken
 }
