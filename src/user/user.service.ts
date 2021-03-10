@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {  Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput, CreateUserOutput } from './dtos/create-user.dto';
+import {  FindByUserIdOutput } from './dtos/find-by-userid.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -21,5 +22,14 @@ export class UserService {
         }catch{
             return {ok: false, error:"Cannot create an account"}
         }
+    }
+
+    async findByUserId(userId:string): Promise<FindByUserIdOutput>{
+        try{
+            const user = await this.users.findOne({userId}, {loadRelationIds: true})
+            return {ok: true, user}
+        }catch(err){
+            return {ok: false}
+        } 
     }
 }

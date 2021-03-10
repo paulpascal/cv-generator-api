@@ -14,7 +14,7 @@ export class User extends CoreEntity {
     @IsString()
     userId:string;
 
-    @OneToOne(()=>Profile, profile=> profile.user)
+    @OneToOne(()=>Profile, profile=> profile.user, { eager:true})
     @JoinColumn()
     profile: Profile
 }

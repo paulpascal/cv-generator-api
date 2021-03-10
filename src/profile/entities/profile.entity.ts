@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 import { CoreEntity } from "src/common/entities/common.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, OneToOne } from "typeorm";
@@ -10,20 +10,16 @@ export class Profile extends CoreEntity {
     @IsNotEmpty()
     name: string;
   
-    @Column()
-    @IsString()
+    @Column({nullable:true})
     email?: string;
   
-    @Column()
-    @IsString()
+    @Column({nullable:true})
     phone?: string;
   
-    @Column()
-    @IsString()
+    @Column({nullable:true})
     website?: string;
     
-    @Column()
-    @IsString()
+    @Column({nullable:true})
     biography?: string;
 
     @Column()
@@ -31,10 +27,10 @@ export class Profile extends CoreEntity {
     @IsNotEmpty()
     workTitle: string;
 
-    @Column()
-    @IsString()
+    @Column({nullable:true})
     photoUrl?: string;
 
     @OneToOne(()=>User, user=>user.profile)
     user: User
 }
+
