@@ -4,4 +4,6 @@ import { Profile } from "../entities/profile.entity";
 
 export class UpdateProfileInput extends PartialType(OmitType(Profile, ["user"])) {}
 
-export class UpdateProfileOutput extends QueryOutput {}
+export class UpdateProfileOutput extends QueryOutput {
+    profile?: Profile;
+}
