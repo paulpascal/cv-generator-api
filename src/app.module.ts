@@ -11,6 +11,8 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { ProfileModule } from './profile/profile.module';
 import { Profile } from './profile/entities/profile.entity';
+import { WorkingExperienceModule } from './working-experience/working-experience.module';
+import { WorkingExperience } from './working-experience/entities/working-experience.entity';
 
 
 global['fetch'] = require('node-fetch');
@@ -40,12 +42,13 @@ global['fetch'] = require('node-fetch');
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Profile],
+      entities: [User, Profile, WorkingExperience],
       logging: process.env.NODE_ENV !=='prod' && process.env.NODE_ENV!=='test',
       synchronize: process.env.NODE_ENV !== "prod",
     }),
     UserModule,
     ProfileModule,
+    WorkingExperienceModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
