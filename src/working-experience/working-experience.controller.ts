@@ -1,34 +1,42 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { WorkingExperienceService } from './working-experience.service';
-import { CreateWorkingExperienceDto } from './dto/create-working-experience.dto';
+import { CreateWorkingExperienceInput } from './dto/create-working-experience.dto';
 import { UpdateWorkingExperienceDto } from './dto/update-working-experience.dto';
+import { Req, UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
 @Controller('working-experience')
 export class WorkingExperienceController {
   constructor(private readonly workingExperienceService: WorkingExperienceService) {}
 
   @Post()
-  create(@Body() createWorkingExperienceDto: CreateWorkingExperienceDto) {
-    return this.workingExperienceService.create(createWorkingExperienceDto);
+  @UseGuards(AuthGuard('jwt'))
+  create(@Req() request:RequestWithUser, @Body() createWorkingExperienceInput: CreateWorkingExperienceInput) {
+    return this.workingExperienceService.create(request.user, createWorkingExperienceInput);
   }
 
   @Get()
-  findAll() {
-    return this.workingExperienceService.findAll();
+  @UseGuards(AuthGuard('jwt'))
+  findAll(@Req() request:RequestWithUser,) {
+    return this.workingExperienceService.findAll(request.user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workingExperienceService.findOne(+id);
+  @UseGuards(AuthGuard('jwt'))
+  findOne(@Req() request:RequestWithUser,@Param('id') id: string) {
+    return this.workingExperienceService.findOne(request.user,+id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateWorkingExperienceDto: UpdateWorkingExperienceDto) {
+  @UseGuards(AuthGuard('jwt'))
+  update(@Req() request:RequestWithUser,@Param('id') id: string, @Body() updateWorkingExperienceDto: UpdateWorkingExperienceDto) {
     return this.workingExperienceService.update(+id, updateWorkingExperienceDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @UseGuards(AuthGuard('jwt'))
+  remove(@Req() request:RequestWithUser,@Param('id') id: string) {
     return this.workingExperienceService.remove(+id);
   }
 }

@@ -23,13 +23,14 @@ export class WorkingExperience extends CoreEntity{
     @Column({nullable:true})
     endDate?: string;
     
-    @Column({default: false})
+    @Column('boolean',{default: false})
     @IsBoolean()
-    isActual: boolean;
+    isActual: boolean=false;
 
     @Column({nullable:true})
     description?: string;
 
     @ManyToOne(() => User, user => user.workingExperiences)
     user: User;
+
 }

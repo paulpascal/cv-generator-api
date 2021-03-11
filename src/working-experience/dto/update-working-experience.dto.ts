@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateWorkingExperienceDto } from './create-working-experience.dto';
+import { CreateWorkingExperienceInput } from './create-working-experience.dto';
 
-export class UpdateWorkingExperienceDto extends PartialType(CreateWorkingExperienceDto) {}
+export class UpdateWorkingExperienceDto extends PartialType(CreateWorkingExperienceInput) {}
