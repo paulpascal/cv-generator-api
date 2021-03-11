@@ -13,6 +13,7 @@ import { ProfileModule } from './profile/profile.module';
 import { Profile } from './profile/entities/profile.entity';
 import { WorkingExperienceModule } from './working-experience/working-experience.module';
 import { WorkingExperience } from './working-experience/entities/working-experience.entity';
+import { EducationModule } from './education/education.module';
 
 
 global['fetch'] = require('node-fetch');
@@ -49,6 +50,7 @@ global['fetch'] = require('node-fetch');
     UserModule,
     ProfileModule,
     WorkingExperienceModule,
+    EducationModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],

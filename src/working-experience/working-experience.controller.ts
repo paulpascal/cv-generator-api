@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { WorkingExperienceService } from './working-experience.service';
 import { CreateWorkingExperienceInput } from './dto/create-working-experience.dto';
-import { UpdateWorkingExperienceDto } from './dto/update-working-experience.dto';
+import { UpdateWorkingExperienceInput } from './dto/update-working-experience.dto';
 import { Req, UseGuards } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
@@ -30,13 +30,13 @@ export class WorkingExperienceController {
 
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
-  update(@Req() request:RequestWithUser,@Param('id') id: string, @Body() updateWorkingExperienceDto: UpdateWorkingExperienceDto) {
-    return this.workingExperienceService.update(+id, updateWorkingExperienceDto);
+  update(@Req() request:RequestWithUser, @Param('id') id: string, @Body() UpdateWorkingExperienceInput: UpdateWorkingExperienceInput) {
+    return this.workingExperienceService.update(request.user, +id, UpdateWorkingExperienceInput);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
   remove(@Req() request:RequestWithUser,@Param('id') id: string) {
-    return this.workingExperienceService.remove(+id);
+    return this.workingExperienceService.remove(request.user,+id);
   }
 }
