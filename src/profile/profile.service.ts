@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateProfileInput, CreateProfileOutput } from './dtos/create-profile.dto';
+import { GetCompleteUserProfileOutput } from './dtos/get-complete-user-profile.dto';
 import { GetProfileOutput } from './dtos/get-profile.dto';
 import { UpdateProfileInput, UpdateProfileOutput } from './dtos/update-profile';
 import { Profile } from './entities/profile.entity';
@@ -51,6 +52,15 @@ export class ProfileService {
             return {ok:true, profile:updatedProfile}
         }catch{
             return {ok: false, error: "Cannot update profile"}
+        }
+    }
+
+    async getCompleteUserProfile(user:User):Promise<GetCompleteUserProfileOutput>{
+        try{ 
+            const userProfile = await await this.users.findOne({id:user.id}, {relations: ['profile', 'workingExperiences', 'educations', 'skillsets']})
+            return {ok: true, user: userProfile}
+        }catch{
+            return {ok: false, error: "Cannot get user"}
         }
     }
 }
