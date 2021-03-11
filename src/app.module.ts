@@ -15,6 +15,8 @@ import { WorkingExperienceModule } from './working-experience/working-experience
 import { WorkingExperience } from './working-experience/entities/working-experience.entity';
 import { EducationModule } from './education/education.module';
 import { Education } from './education/entities/education.entity';
+import { SkillsetModule } from './skillset/skillset.module';
+import { Skillset } from './skillset/entities/skillset.entity';
 
 
 global['fetch'] = require('node-fetch');
@@ -44,7 +46,7 @@ global['fetch'] = require('node-fetch');
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Profile, WorkingExperience, Education],
+      entities: [User, Profile, WorkingExperience, Education, Skillset],
       logging: process.env.NODE_ENV !=='prod' && process.env.NODE_ENV!=='test',
       synchronize: process.env.NODE_ENV !== "prod",
     }),
@@ -52,6 +54,7 @@ global['fetch'] = require('node-fetch');
     ProfileModule,
     WorkingExperienceModule,
     EducationModule,
+    SkillsetModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
