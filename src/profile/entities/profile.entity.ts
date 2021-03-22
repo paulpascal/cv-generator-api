@@ -22,6 +22,9 @@ export class Profile extends CoreEntity {
     @Column({nullable:true})
     biography?: string;
 
+    @Column("simple-array",{nullable:true})
+    bottomNotes?: string;
+
     @Column()
     @IsString()
     @IsNotEmpty()
