@@ -46,7 +46,7 @@ global['fetch'] = require('node-fetch');
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      ssl:process.env.NODE_ENV ==='prod'? true:false,
+      ssl:{rejectUnauthorized: false},
       entities: [User, Profile, WorkingExperience, Education, Skillset],
       logging: process.env.NODE_ENV !=='prod' && process.env.NODE_ENV!=='test',
       synchronize: process.env.NODE_ENV !== "prod",
