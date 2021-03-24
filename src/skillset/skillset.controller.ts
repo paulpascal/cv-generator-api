@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, Req } from 
 
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
-import { CreateSkillsetInput, CreateSkillsetOutput } from './dto/create-Skillset.dto';
+import { CreateSkillsetInput, CreateSkillsetOutput } from './dto/create-skillset.dto';
 import { FindSkillsetOutput } from './dto/find-skillset.dto';
 import { GetAllSkillsetsOutput } from './dto/get-all-skillsets.dto';
 import { RemoveSkillsetOutput } from './dto/remove-skillset.dto';

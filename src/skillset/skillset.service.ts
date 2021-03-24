@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateSkillsetInput, CreateSkillsetOutput } from './dto/create-Skillset.dto';
+import { CreateSkillsetInput, CreateSkillsetOutput } from './dto/create-skillset.dto';
 import { FindSkillsetOutput } from './dto/find-skillset.dto';
 import { GetAllSkillsetsOutput } from './dto/get-all-skillsets.dto';
 import { UpdateSkillsetInput, UpdateSkillsetOutput } from './dto/update-skillset.dto';
