@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { AuthConfig } from './auth.config';
 import { AuthConfirmationInput, AuthConfirmationOutput } from './dtos/confirm-signup.dto';
 import {
@@ -77,7 +77,7 @@ export class AuthService {
           resolve({ok: true, token: result.getIdToken().getJwtToken(), userId: result.getIdToken()?.payload?.sub });
         },
         onFailure: (err) => {
-          reject({ok: false, error: err.message});
+          reject(new BadRequestException(err.message));
         },
       });
     });
