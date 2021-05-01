@@ -37,7 +37,7 @@ describe('User module (e2e)', () => {
           name: 'testUser@testUser.com',
           password: 'P4ssWord1!',
         })
-        .expect(200);
+        .expect(201);
     });
   });
 });
