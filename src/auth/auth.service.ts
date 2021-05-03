@@ -1,6 +1,9 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { AuthConfig } from './auth.config';
-import { AuthConfirmationInput, AuthConfirmationOutput } from './dtos/confirm-signup.dto';
+import {
+  AuthConfirmationInput,
+  AuthConfirmationOutput,
+} from './dtos/confirm-signup.dto';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -31,8 +34,11 @@ export class AuthService {
     return this.authConfig.secret;
   }
 
-  async cognitoRegister(userPool: CognitoUserPool, {name, password, email}:AuthRegisterInput): Promise<ISignUpResult>{
-     return new Promise((resolve, reject) => {
+  async cognitoRegister(
+    userPool: CognitoUserPool,
+    { name, password, email }: AuthRegisterInput,
+  ): Promise<ISignUpResult> {
+    return new Promise((resolve, reject) => {
       return userPool.signUp(
         name,
         password,
@@ -41,22 +47,30 @@ export class AuthService {
         (err, result) => {
           if (!result) {
             reject(err);
-          } else {
-            resolve(result);
           }
+          resolve(result);
         },
       );
     });
   }
 
-  async register(authRegisterRequest: AuthRegisterInput): Promise<AuthRegisterOutput> {
-    try{
-      const registerUserRequest = await this.cognitoRegister(this.userPool, authRegisterRequest)
-      const userData: CreateUserInput ={email:authRegisterRequest.email, userId: registerUserRequest.userSub} 
-      const userCreation = await this.userService.createUser(userData)
-      return userCreation
-    }catch{
-      return {ok: false, error: "Cannot create account"}
+  async register(
+    authRegisterRequest: AuthRegisterInput,
+  ): Promise<AuthRegisterOutput> {
+    try {
+      const registerUserRequest = await this.cognitoRegister(
+        this.userPool,
+        authRegisterRequest,
+      );
+      const userData: CreateUserInput = {
+        email: authRegisterRequest.email,
+        userId: registerUserRequest.userSub,
+      };
+      const userCreation = await this.userService.createUser(userData);
+
+      return userCreation;
+    } catch {
+      return { ok: false, error: 'Cannot create account' };
     }
   }
 
@@ -74,7 +88,11 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       return newUser.authenticateUser(authenticationDetails, {
         onSuccess: (result) => {
-          resolve({ok: true, token: result.getIdToken().getJwtToken(), userId: result.getIdToken()?.payload?.sub });
+          resolve({
+            ok: true,
+            token: result.getIdToken().getJwtToken(),
+            userId: result.getIdToken()?.payload?.sub,
+          });
         },
         onFailure: (err) => {
           reject(new BadRequestException(err.message));
@@ -83,7 +101,9 @@ export class AuthService {
     });
   }
 
-  async verifyEmail(authConfirmSignupDto: AuthConfirmationInput):Promise<AuthConfirmationOutput> {
+  async verifyEmail(
+    authConfirmSignupDto: AuthConfirmationInput,
+  ): Promise<AuthConfirmationOutput> {
     const { email, code } = authConfirmSignupDto;
     const userData = {
       Username: email,
@@ -93,9 +113,9 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       return newUser.confirmRegistration(code, true, (err, res) => {
         if (err) {
-          reject({ok: false, error: err.message});
+          reject({ ok: false, error: err.message });
         }
-        resolve({ok:true});
+        resolve({ ok: true });
       });
     });
   }

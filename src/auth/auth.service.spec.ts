@@ -59,17 +59,47 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
-  /*     it('should register a cognito user', async () => {
+  describe('cognitoRegister', () => {
+    it('should register a cognito user', async () => {
       const mockedCongitoUserPool = new CognitoUserPool({
         UserPoolId: authConfig.userPoolId,
         ClientId: authConfig.clientId,
       });
+      const expected = { userSub: 'userSub' };
+      mockedCongitoUserPool.signUp = jest
+        .fn()
+        .mockImplementation(
+          (username, password, userAttributes, validationData, cb) => {
+            cb(null, expected);
+          },
+        );
       // Try console log auth.service on line 35-36 to see the resolve value
       const result = await service.cognitoRegister(mockedCongitoUserPool, {
         ...mockedUser,
       });
-      console.log(result);
-    }); */
+      expect(result).toEqual(expected);
+    });
+    it('should fail on rejection', async () => {
+      const mockedCongitoUserPool = new CognitoUserPool({
+        UserPoolId: authConfig.userPoolId,
+        ClientId: authConfig.clientId,
+      });
+      const expected = new Error('User already exists');
+      mockedCongitoUserPool.signUp = jest
+        .fn()
+        .mockImplementation(
+          (username, password, userAttributes, validationData, cb) => {
+            cb(expected);
+          },
+        );
+      // Try console log auth.service on line 35-36 to see the resolve value
+      await expect(
+        service.cognitoRegister(mockedCongitoUserPool, {
+          ...mockedUser,
+        }),
+      ).rejects.toThrow(expected);
+    });
+  });
 
   describe('register', () => {
     it('should register a new user', async () => {
