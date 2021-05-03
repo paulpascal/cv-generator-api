@@ -1,14 +1,10 @@
 import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
 import { AuthConfig } from './auth.config';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
-import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import { AuthRegisterInput } from './dtos/register.dto';
-
-type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 
 const mockValidate = jest.fn();
 const mockUserService = () => ({
@@ -73,7 +69,6 @@ describe('AuthService', () => {
             cb(null, expected);
           },
         );
-      // Try console log auth.service on line 35-36 to see the resolve value
       const result = await service.cognitoRegister(mockedCongitoUserPool, {
         ...mockedUser,
       });
@@ -123,6 +118,18 @@ describe('AuthService', () => {
         email: 'test@example.com',
         userId: undefined,
       });
+    });
+  });
+
+  describe('verifyEmail', () => {
+    const authConfirmSignupDto = {
+      email: mockedUser.email,
+      code: '123456',
+    };
+    it('should verify email', async () => {
+      const result = await service.verifyEmail(authConfirmSignupDto);
+      expect(result).toEqual({ ok: true });
+      expect(CognitoUser).toHaveBeenCalledTimes(1);
     });
   });
 });

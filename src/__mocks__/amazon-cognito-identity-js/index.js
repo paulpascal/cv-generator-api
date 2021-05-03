@@ -3,4 +3,6 @@ module.exports = {
   CognitoUserAttribute: jest
     .fn()
     .mockImplementation(require('./CognitoUserAttribute')),
+  CognitoUser: jest.fn().mockImplementation(require('./CognitoUser')),
+  AuthenticationDetails: jest.fn(),
 };
