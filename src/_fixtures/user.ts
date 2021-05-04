@@ -24,7 +24,7 @@ userWithWe.workingExperiences = [
   MockedWorkingExperience,
   MockedWorkingExperience,
 ];
-
+userWithWe.educations = [];
 const completeUser: User = new User();
 completeUser.profile = userProfile;
 completeUser.profile.id = 1;

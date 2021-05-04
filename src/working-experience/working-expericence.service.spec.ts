@@ -1,8 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { emptyUser, userWithProfile, userWithWe } from 'src/_fixtures/user';
-import { MockedWorkingExperience } from 'src/_fixtures/workingExperience';
+import { emptyUser, userWithWe } from 'src/_fixtures/user';
 import { Repository } from 'typeorm';
 import { CreateWorkingExperienceInput } from './dto/create-working-experience.dto';
 import { UpdateWorkingExperienceInput } from './dto/update-working-experience.dto';
