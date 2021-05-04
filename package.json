@@ -101,7 +101,8 @@
       ".constants.ts",
       ".dto.ts",
       ".controller.ts",
-      ".module.ts"
+      ".module.ts",
+      "config.ts"
     ],
     "testEnvironment": "node"
   }
