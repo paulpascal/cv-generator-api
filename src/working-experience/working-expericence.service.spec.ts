@@ -130,7 +130,7 @@ describe('WorkingExperienceService', () => {
       expect(workingExperienceRepository.findOne).toHaveBeenCalledTimes(1);
     });
   });
-  describe('should update a we', () => {
+  describe('update', () => {
     it('should get an array of working experiences', async () => {
       const updateWeInput = new UpdateWorkingExperienceInput();
       updateWeInput.title = 'Updated title';

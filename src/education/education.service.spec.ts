@@ -4,6 +4,7 @@ import { User } from 'src/user/entities/user.entity';
 import { emptyUser, userWithWe } from 'src/_fixtures/user';
 import { Repository } from 'typeorm';
 import { CreateEducationInput } from './dto/create-education.dto';
+import { UpdateEducationInput } from './dto/update-education.dto';
 import { EducationService } from './education.service';
 import { Education } from './entities/education.entity';
 
@@ -147,6 +148,32 @@ describe('EducationService', () => {
       expect(result).toEqual({
         ok: false,
         error: 'Cannot remove education',
+      });
+    });
+  });
+  describe('update', () => {
+    it('should get an array of working experiences', async () => {
+      const updateEdInput = new UpdateEducationInput();
+      updateEdInput.title = 'Updated title';
+      educationRespository.save.mockResolvedValueOnce(true);
+      service.findOne = jest.fn().mockResolvedValueOnce({
+        education: { id: 1, user: { id: 1 } },
+      });
+      const result = await service.update(userWithWe, 1, updateEdInput);
+      expect(result).toEqual({
+        ok: true,
+        education: { id: 1, user: { id: 1 } },
+      });
+    });
+    it('should fail on rejection', async () => {
+      const updateEdInput = new UpdateEducationInput();
+      updateEdInput.title = 'Updated title';
+      educationRespository.save.mockResolvedValueOnce(true);
+      service.findOne = jest.fn().mockRejectedValueOnce(new Error('ops'));
+      const result = await service.update(userWithWe, 1, updateEdInput);
+      expect(result).toEqual({
+        ok: false,
+        error: 'Cannot update education',
       });
     });
   });
